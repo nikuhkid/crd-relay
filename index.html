@@ -1,0 +1,42 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>CRD Code</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, -apple-system, Segoe UI, sans-serif; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #101214; color: #f2f5f7; }
+    main { width: min(92vw, 560px); padding: 28px; }
+    .label { color: #8d99a6; font-size: 14px; margin-bottom: 10px; }
+    #code { font-size: clamp(36px, 10vw, 72px); line-height: 1; font-weight: 750; letter-spacing: .04em; word-break: break-word; }
+    #updated { margin-top: 18px; color: #aab4bf; font-size: 14px; }
+    button { margin-top: 24px; border: 1px solid #48515a; background: #1b2026; color: #f2f5f7; padding: 10px 14px; border-radius: 6px; cursor: pointer; }
+    button:hover { background: #252b33; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="label">Chrome Remote Desktop support code</div>
+    <div id="code">No code</div>
+    <div id="updated">Waiting for first publish.</div>
+    <button id="copy" type="button">Copy</button>
+  </main>
+  <script>
+    async function loadCode() {
+      const response = await fetch(`code.json?ts=${Date.now()}`, { cache: 'no-store' });
+      const data = await response.json();
+      const code = data.code || 'No code';
+      document.getElementById('code').textContent = code;
+      document.getElementById('updated').textContent = data.updated ? `Updated ${new Date(data.updated).toLocaleString()}` : (data.note || 'No timestamp.');
+    }
+    document.getElementById('copy').addEventListener('click', async () => {
+      const text = document.getElementById('code').textContent.trim();
+      if (text && text !== 'No code') await navigator.clipboard.writeText(text);
+    });
+    loadCode();
+    setInterval(loadCode, 15000);
+  </script>
+</body>
+</html>
