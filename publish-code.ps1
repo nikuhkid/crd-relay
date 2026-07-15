@@ -12,5 +12,5 @@ $Payload = [ordered]@{
 Set-Content -LiteralPath (Join-Path $Repo 'code.json') -Encoding UTF8 -Value $Payload
 
 git -C $Repo add code.json
-git -C $Repo commit -m "Publish CRD code"
+git -C $Repo commit -m "Update value"
 git -C $Repo push origin main
